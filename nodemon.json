@@ -1,0 +1,9 @@
+{
+    "env": {
+        "MONGO_USER":"ColdEye",
+        "MONGO_PASSWORD": "ua3ddcs3",
+        "MONGO_DEFAULT_DATABASE":"myTodoAppDatabase?retryWrites=true&w=majority"
+
+
+    }
+}

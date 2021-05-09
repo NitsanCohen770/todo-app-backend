@@ -11,10 +11,10 @@ const mongoose = require('mongoose');
 const csrf = require('csurf');
 const cors = require('cors');
 
+const mongodbURL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.wlzpx.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`;
 const app = express();
 const store = new MongoDBStore({
-  uri:
-    'mongodb+srv://ColdEye:ua3ddcs3@cluster0.wlzpx.mongodb.net/myTodoAppDatabase?retryWrites=true&w=majority',
+  uri: mongodbURL,
   collection: 'sessions',
   connectionOptions: {
     sslCA: ca,
@@ -23,14 +23,12 @@ const store = new MongoDBStore({
 app.use(bodyParser.json());
 const corsOptions = {
   origin: '*',
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 const userRoutes = require('./routes/user');
 
 const authRoutes = require('./routes/auth');
-
-// app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   session({
@@ -45,14 +43,11 @@ app.use(userRoutes);
 app.use(authRoutes);
 
 mongoose
-  .connect(
-    'mongodb+srv://ColdEye:ua3ddcs3@cluster0.wlzpx.mongodb.net/myTodoAppDatabase?retryWrites=true&w=majority',
-    {
-      sslValidate: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      sslValidate: false,
-      sslCA: ca,
-    }
-  )
-  .then(result => app.listen(3003));
+  .connect(mongodbURL, {
+    sslValidate: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    sslValidate: false,
+    sslCA: ca,
+  })
+  .then(result => app.listen(process.env.PORT || 3003));

@@ -21,9 +21,13 @@ const store = new MongoDBStore({
   },
 });
 app.use(bodyParser.json());
-// const adminRoutes = require('./routes/admin');
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 const userRoutes = require('./routes/user');
-app.use(cors());
+
 const authRoutes = require('./routes/auth');
 
 // app.use(bodyParser.urlencoded({ extended: false }));

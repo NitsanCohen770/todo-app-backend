@@ -13,36 +13,33 @@ const userSchema = new Schema({
   },
   resetToken: String,
   resetTokenExpiration: Date,
-  todos: {
-    list: [
-      {
-        todoId: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-          required: true,
-        },
-      },
-    ],
-  },
+  todos: [],
 });
-userSchema.methods.removeTodo = function (todo) {
-  const updatedTodoList = this.todos.list.concat(todo);
+userSchema.methods.addTodo = function (todo) {
+  this.todos.push(todo);
 
-  const updatedTodo = {
-    list: updatedTodoList,
-  };
-  this.cart = updatedTodo;
+  // const updatedTodo = {
+  //   todo: updatedTodoList,
+  // };
+  // this.todo = updatedTodo;
   return this.save();
 };
-userSchema.methods.removeTodo = function (todo) {
-  const updatedTodoList = this.todos.list.filter(todoItem => {
-    return todoItem.todoId.toString() !== todo._id.toString();
+userSchema.methods.removeTodo = function (todoId) {
+  const updatedTodoList = this.todos.filter(todoItem => {
+    return todoItem.id !== todoId;
   });
 
-  const updatedTodo = {
-    list: updatedTodoList,
-  };
-  this.cart = updatedTodo;
+  this.todos = [...updatedTodoList];
+  return this.save();
+};
+userSchema.methods.editTodo = function (todoId, updateData) {
+  const todoItemIndex = this.todo.findIndex(todo => {
+    return todo.id === todoId;
+  });
+
+  this.todo[todoItemIndex].input = updateData.input;
+  this.todo[todoItemIndex].priority = updateData.priority;
+
   return this.save();
 };
 module.exports = mongoose.model('User', userSchema);

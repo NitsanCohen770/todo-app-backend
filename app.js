@@ -41,16 +41,8 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   res.locals.isAuthenticated = req.session.isLoggedIn;
-//   // res.locals.csrfToken = req.csrfToken();
-//   next();
-// });
-// app.use('/admin', adminRoutes);
 app.use(userRoutes);
 app.use(authRoutes);
-
-// app.use(errorController.get404);
 
 mongoose
   .connect(
@@ -61,6 +53,6 @@ mongoose
       useUnifiedTopology: true,
       sslValidate: false,
       sslCA: ca,
-    } // פה מצרפים את התעודה בזמן החיבור
+    }
   )
   .then(result => app.listen(3003));

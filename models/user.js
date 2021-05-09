@@ -18,10 +18,6 @@ const userSchema = new Schema({
 userSchema.methods.addTodo = function (todo) {
   this.todos.push(todo);
 
-  // const updatedTodo = {
-  //   todo: updatedTodoList,
-  // };
-  // this.todo = updatedTodo;
   return this.save();
 };
 userSchema.methods.removeTodo = function (todoId) {

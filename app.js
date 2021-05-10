@@ -10,7 +10,8 @@ const User = require('./models/user');
 const mongoose = require('mongoose');
 const csrf = require('csurf');
 const cors = require('cors');
-
+const checkDevelopment = process.env.NODE_ENV === 'development';
+console.log(checkDevelopment);
 const mongodbURL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.wlzpx.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`;
 const app = express();
 const store = new MongoDBStore({

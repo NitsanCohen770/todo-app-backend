@@ -1,1 +1,1 @@
-is a backend to the todo-app
+This is the backend to the todo-app

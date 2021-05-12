@@ -5,10 +5,12 @@ exports.postAddTodo = (req, res, next) => {
   const input = req.body.input;
   const priority = req.body.priority;
   const userId = req.body.userId;
-
+  const editedTodoId = req.body.editedTodoId;
+  console.log(editedTodoId);
+  console.log(input);
   User.findById(userId).then(user => {
     user
-      .addTodo({ id, input, priority })
+      .addTodo({ id, input, priority }, editedTodoId)
       .then(response => {
         console.log(response);
         return res.end(JSON.stringify({ opration: 'Success' }));
@@ -54,7 +56,6 @@ exports.postEditTodo = (req, res, next) => {
     return user
       .editTodo(id, updatedTodoData)
       .then(response => {
-        console.log('he');
         res.status(202);
       })
       .catch(err => console.log(err));

@@ -15,7 +15,18 @@ const userSchema = new Schema({
   resetTokenExpiration: Date,
   todos: [],
 });
-userSchema.methods.addTodo = function (todo) {
+userSchema.methods.addTodo = function (todo, editedTodoId) {
+  if (editedTodoId) {
+    const editedIndex = this.todos.findIndex(todo => todo.id === editedTodoId);
+    // const updatedTodoList = [
+    //   ...this.todos,
+    //   (this.todos[editedIndex].input = todo.input),
+    // ];
+
+    this.todos[editedIndex].input = todo.input;
+    // this.todos = [...updatedTodoList];
+    return this.save();
+  }
   this.todos.push(todo);
 
   return this.save();

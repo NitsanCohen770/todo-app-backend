@@ -3,7 +3,10 @@
         "MONGO_USER":"ColdEye",
         "MONGO_PASSWORD": "ua3ddcs3",
         "MONGO_DEFAULT_DATABASE":"myTodoAppDatabase?retryWrites=true&w=majority",
-       "NODE_ENV" : "development"
+       "NODE_ENV" : "development",
+       "MONGO_CONNECT":"mongodb+srv://ColdEye:ua3ddcs3@cluster0.wlzpx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+
 
     }
 }

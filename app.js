@@ -14,8 +14,9 @@ const dotenv = require('dotenv');
 const checkDevelopment = process.env.NODE_ENV === 'development';
 console.log(checkDevelopment);
 dotenv.config();
+const uri = process.env.MONGO_CONNECT;
 console.log(process.env.MONGO_USER);
-const mongodbURL = `${process.env.MONGO_CONNECT}`;
+const mongodbURL = uri;
 const app = express();
 const store = new MongoDBStore({
   uri: mongodbURL,
@@ -48,10 +49,9 @@ app.use(authRoutes);
 
 mongoose
   .connect(mongodbURL, {
-    sslValidate: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    sslValidate: false,
+
     sslCA: ca,
   })
   .then(result => app.listen(process.env.PORT || 3003));

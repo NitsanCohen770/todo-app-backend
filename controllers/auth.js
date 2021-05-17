@@ -21,6 +21,7 @@ const transportoer = nodemailer.createTransport(
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
@@ -32,16 +33,23 @@ exports.postLogin = (req, res, next) => {
         .then(doMatch => {
           if (doMatch) {
             let token = jwt.sign(
-              { userId: user.id, email: email },
+              {
+                userId: user.id,
+                email: email,
+                token,
+                resetTokenExpiration: new Date(),
+              },
               'supersecertshhhhhh',
               {
                 expiresIn: '1h',
               }
             );
-            console.log(token);
-            return res
-              .status(201)
-              .json({ userId: user.id, token: token, email: email });
+
+            return res.status(201).json({
+              userId: user.id,
+              token,
+              resetTokenExpiration: new Date(),
+            });
           }
         })
         .catch(err => {
@@ -54,19 +62,21 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+  const confirmedPassword = req.body.confirmedPassword;
+  const fullName = req.body.fullName;
 
+  console.log(address);
   User.findOne({ email: email }).then(userDoc => {
     if (userDoc) {
       console.log('falied');
-      return new Error('failed');
+      return new Error('faled');
     }
     return bcrypt.hash(password, 12).then(hashedPassword => {
       console.log('success');
       const user = new User({
         email,
+        fullName,
         password: hashedPassword,
-        // cart: { items: [] },
       });
       return user.save().then(resopnde => {
         let token = jwt.sign(
@@ -76,9 +86,7 @@ exports.postSignup = (req, res, next) => {
             expiresIn: '1h',
           }
         );
-        return res
-          .status(201)
-          .json({ userId: user.id, token: token, email: email });
+        return res.status(201).json({ userId: user.id, token, email });
       });
     });
   });

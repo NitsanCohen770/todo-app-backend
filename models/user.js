@@ -11,7 +11,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  resetToken: String,
+  fullName: {
+    type: String,
+    required: true,
+  },
+
+  token: String,
   resetTokenExpiration: Date,
   todos: [],
 });
